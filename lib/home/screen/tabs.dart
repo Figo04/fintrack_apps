@@ -1,6 +1,6 @@
 //import 'package:fintrack_app/home/screen/dompet.dart';
+import 'package:fintrack_app/home/screen/dompet.dart';
 import 'package:fintrack_app/home/screen/home.dart';
-import 'package:fintrack_app/home/screen/home2.dart';
 import 'package:fintrack_app/home/screen/rekap.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _TabsScreenState extends State<TabsScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     RekapScreen(),
-    //DompetScreen(),
+    DompetScreen(),
   ];
 
   void _selectPage(int index) {
@@ -42,10 +42,10 @@ class _TabsScreenState extends State<TabsScreen> {
               icon: Icon(Icons.assessment_outlined),
               label: 'Rekap',
             ),
-            //BottomNavigationBarItem(
-            //icon: Icon(Icons.account_balance_wallet_rounded),
-            //label: 'Dompet',
-            //),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded),
+              label: 'Dompet',
+            ),
             //BottomNavigationBarItem(
             //icon: Icon(Icons.delete),
             //label: 'Hapus',
