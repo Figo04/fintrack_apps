@@ -14,10 +14,9 @@ class DompetScreen extends StatefulWidget {
 class _DompetScreenState extends State<DompetScreen> {
   final FinancialService _financialService = FinancialService();
   final int _currentUserId = 1;
+  final TextEditingController _amountController = TextEditingController();
 
   double _totalBalance = 0.0;
-  List<Map<String, dynamic>> _userAccounts = [];
-  List<Transaction> _transactions = [];
   bool _isLoading = true;
 
   @override
@@ -32,15 +31,8 @@ class _DompetScreenState extends State<DompetScreen> {
     try {
       final totalBalance =
           await _financialService.getTotalBalance(_currentUserId);
-      final userAccounts =
-          await _financialService.getUserAccountsWithDetails(_currentUserId);
-      final transactions =
-          await _financialService.getTransactionHistory(_currentUserId);
-
       setState(() {
         _totalBalance = totalBalance;
-        _userAccounts = userAccounts;
-        _transactions = transactions;
         _isLoading = false;
       });
     } catch (e) {
@@ -53,10 +45,10 @@ class _DompetScreenState extends State<DompetScreen> {
   int selectedIndex = 0; // index icon yang sedang aktif
 
   final List<Map<String, dynamic>> wallets = [
-    {"icon": Icons.account_balance_wallet, "label": "DANA"},
-    {"icon": Icons.account_balance, "label": "MyBCA"},
+    {"icon": Icons.account_balance_wallet, "label": "Dana"},
+    {"icon": Icons.account_balance, "label": "BCA"},
     {"icon": Icons.account_balance_wallet_outlined, "label": "Gopay"},
-    {"icon": Icons.money, "label": "Cash"},
+    {"icon": Icons.money, "label": "Uang Tunai"},
     {"icon": Icons.account_balance, "label": "BRI"},
     {"icon": Icons.account_balance, "label": "Mandiri"},
     {"icon": Icons.account_balance, "label": "Jago"},
@@ -168,18 +160,26 @@ class _DompetScreenState extends State<DompetScreen> {
                     wallet["icon"],
                     wallet["label"],
                     isSelected,
-                    () {
+                    () async {
                       setState(() {
                         selectedIndex = index;
                       });
 
-                      Navigator.push(
+                      // Navigate ke TambahSaldoScreen dan tunggu hasilnya
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              TambahSaldoScreen(walletName: wallet["label"]),
+                          builder: (_) => TambahSaldoScreen(
+                            walletName: wallet["label"],
+                            controller: _amountController,
+                          ),
                         ),
                       );
+
+                      // Jika result adalah true, refresh data
+                      if (result == true) {
+                        _refreshData();
+                      }
                     },
                   );
                 },

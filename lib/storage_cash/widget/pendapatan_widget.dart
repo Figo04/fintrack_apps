@@ -310,7 +310,7 @@ class AccountCard extends StatelessWidget {
             Text(
               accountType.name,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12,  
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 color: isSelected ? AppColors.primary : Colors.grey[700],
               ),
